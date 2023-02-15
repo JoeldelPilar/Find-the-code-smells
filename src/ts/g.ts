@@ -1,3 +1,7 @@
+import { Student } from "../models/Student";
+import { Temp } from "../models/Temp";
+import { ProductProps } from "../models/ProductProps";
+
 /*
   1. Se om du kan hitta två stycken code smells i följande funktion och rätta till dem.
   Funktionen tar emot en lista med längshoppslängder och syftet med funktionen är att summera
@@ -5,39 +9,42 @@
   */
 
 function getLength(jumpings: number[]): number {
-  let totalNumber = 0;
+  // let totalNumber = 0;
 
-  totalNumber = jumpings.reduce(
-    (jumpDistanceSoFar, currentJump) => jumpDistanceSoFar + currentJump
-  );
+  // totalNumber = jumpings.reduce(
+  //   (jumpDistanceSoFar, currentJump) => jumpDistanceSoFar + currentJump
+  // );
 
-  return totalNumber;
+  // return totalNumber;
+
+  return jumpings.reduce((jumpDistanceSoFar, currentJump) => { return jumpDistanceSoFar + currentJump});
 }
 
 /*
   2. I detta exempel har vi fokuserat på if-statements. Se om du kan göra exemplet bättre!
   */
 
-class Student {
-  constructor(
-    public name: string,
-    public handedInOnTime: boolean,
-    public passed: boolean
-  ) {}
-}
+// class Student {
+//   constructor(
+//     public name: string,
+//     public handedInOnTime: boolean,
+//     public passed: boolean
+//   ) {}
+// }
 
 function getStudentStatus(student: Student): string {
-  student.passed =
-    student.name == "Sebastian"
-      ? student.handedInOnTime
-        ? true
-        : false
-      : false;
-
-  if (student.passed) {
-    return "VG";
+  // student.passed = student.name == "Sebastian" ? (student.handedInOnTime ? true : false) : false; 
+  if(student.name === 'Sebastian') {
+    if(student.handedInOnTime) {
+      student.passed = true;
+      return 'VG';
+    } else {
+      student.passed = false;
+      return 'IG';
+    }  
   } else {
-    return "IG";
+    student.passed = false;
+    return 'IG';
   }
 }
 
@@ -45,51 +52,54 @@ function getStudentStatus(student: Student): string {
   3. Variabelnamn är viktiga. Kika igenom följande kod och gör om och rätt.
   Det finns flera code smells att identifiera här. Vissa är lurigare än andra.
   */
+const AMOUNT_OF_DAYS_ONE_WEEK = 7;
+const MILLISECONDS_ONE_WEEK = 604800000;
+const CAPITOL_OF_SWEDEN = 'Stockholm'
 
-class Temp {
-  constructor(public q: string, public where: Date, public v: number) {}
-}
 
-function averageWeeklyTemperature(heights: Temp[]) {
-  let r = 0;
-
-  for (let who = 0; who < heights.length; who++) {
-    if (heights[who].q === "Stockholm") {
-      if (heights[who].where.getTime() > Date.now() - 604800000) {
-        r += heights[who].v;
+function averageWeeklyTemperature(tempratures: Temp[]) {
+  let sumOfTemps = 0;
+ 
+  for (let i = 0; i < tempratures.length; i++) {
+    if (tempratures[i].cityName === CAPITOL_OF_SWEDEN) {
+      if (tempratures[i].dateWhenMessured.getTime() > Date.now() - MILLISECONDS_ONE_WEEK) {
+        sumOfTemps += tempratures[i].temprature;
       }
     }
   }
 
-  return r / 7;
-}
+  let avarageTemp = sumOfTemps / AMOUNT_OF_DAYS_ONE_WEEK;
 
+  return avarageTemp;
+  
+}
+averageWeeklyTemperature([{cityName: "Stockholm", dateWhenMessured: new Date, temprature: 5},{cityName: "Stockholm", dateWhenMessured: new Date, temprature: 5},{cityName: "Stockholm", dateWhenMessured: new Date, temprature: 5}]);
 /*
   4. Följande funktion kommer att presentera ett objekt i dom:en. 
   Se om du kan göra det bättre. Inte bara presentationen räknas, även strukturer.
   */
 
-function showProduct(
-  name: string,
-  price: number,
-  amount: number,
-  description: string,
-  image: string,
-  parent: HTMLElement
+function showProduct(productProps: ProductProps 
+  // name: string,
+  // price: number,
+  // amount: number,
+  // description: string,
+  // image: string,
+  // parent: HTMLElement
 ) {
   let container = document.createElement("div");
   let title = document.createElement("h4");
-  let pris = document.createElement("strong");
+  let pricing = document.createElement("strong");
   let imageTag = document.createElement("img");
 
-  title.innerHTML = name;
-  pris.innerHTML = price.toString();
-  imageTag.src = image;
+  title.innerHTML = productProps.name;
+  pricing.innerHTML = productProps.price.toString();
+  imageTag.src = productProps.image;
 
   container.appendChild(title);
   container.appendChild(imageTag);
-  container.appendChild(pris);
-  parent.appendChild(container);
+  container.appendChild(pricing);
+  productProps.parent.appendChild(container);
 }
 
 /*
