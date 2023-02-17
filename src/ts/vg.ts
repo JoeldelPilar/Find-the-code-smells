@@ -26,7 +26,6 @@ export function sortProductsBy(sortBy: Sort, products: Product[]): Product[] {
   return copiedList.sort(comparison);
 }
 
-
 /*
   2. Refaktorera funktionen createProductHtml :)
   */
@@ -177,8 +176,6 @@ let fromstorage: string = localStorage.getItem("savedCart") || "";
 let cartProducts: CartProduct[] = JSON.parse(fromstorage);
 
 function createTableHtml() {
-
-
   let { titleContainer, amountContainer, productQuantity, checkkoutTotal } = RenderTable();
 
   for (let i: number = 0; i < cartProducts.length; i++) {
@@ -215,7 +212,6 @@ function createTableHtml() {
     amountminusbtn.appendChild(iconMinus);
     amountminusbtn.className = "minusbtn";
   }
-
   function renderTableHead(i: number) {
     let tableProduct: HTMLTableCellElement = document.createElement("th");
     titleContainer.appendChild(tableProduct);
@@ -231,7 +227,6 @@ function createTableHtml() {
     productQuantity.appendChild(amountQuantity);
     return amountQuantity;
   }
-
   function RenderTable() {
   let amountContainer = document.getElementById("amount-checkout-container") as HTMLDivElement;
 
