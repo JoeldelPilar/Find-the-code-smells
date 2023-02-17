@@ -1,6 +1,7 @@
 import { Student } from "../models/Student";
 import { Temp } from "../models/Temp";
 import { ProductProps } from "../models/ProductProps";
+import { User } from "../models/CreateUser"
 
 /*
   1. Se om du kan hitta två stycken code smells i följande funktion och rätta till dem.
@@ -9,13 +10,6 @@ import { ProductProps } from "../models/ProductProps";
   */
 
 function getLength(jumpings: number[]): number {
-  // let totalNumber = 0;
-
-  // totalNumber = jumpings.reduce(
-  //   (jumpDistanceSoFar, currentJump) => jumpDistanceSoFar + currentJump
-  // );
-
-  // return totalNumber;
 
   return jumpings.reduce((jumpDistanceSoFar, currentJump) => { return jumpDistanceSoFar + currentJump});
 }
@@ -24,16 +18,8 @@ function getLength(jumpings: number[]): number {
   2. I detta exempel har vi fokuserat på if-statements. Se om du kan göra exemplet bättre!
   */
 
-// class Student {
-//   constructor(
-//     public name: string,
-//     public handedInOnTime: boolean,
-//     public passed: boolean
-//   ) {}
-// }
-
 function getStudentStatus(student: Student): string {
-  // student.passed = student.name == "Sebastian" ? (student.handedInOnTime ? true : false) : false; 
+
   if(student.name === 'Sebastian') {
     if(student.handedInOnTime) {
       student.passed = true;
@@ -73,33 +59,27 @@ function averageWeeklyTemperature(tempratures: Temp[]) {
   return avarageTemp;
   
 }
-averageWeeklyTemperature([{cityName: "Stockholm", dateWhenMessured: new Date, temprature: 5},{cityName: "Stockholm", dateWhenMessured: new Date, temprature: 5},{cityName: "Stockholm", dateWhenMessured: new Date, temprature: 5}]);
+
 /*
   4. Följande funktion kommer att presentera ett objekt i dom:en. 
   Se om du kan göra det bättre. Inte bara presentationen räknas, även strukturer.
   */
 
-function showProduct(productProps: ProductProps 
-  // name: string,
-  // price: number,
-  // amount: number,
-  // description: string,
-  // image: string,
-  // parent: HTMLElement
-) {
+function showProduct(product: ProductProps ) {
+  
   let container = document.createElement("div");
-  let title = document.createElement("h4");
-  let pricing = document.createElement("strong");
+  let title = document.createElement("h3");
+  let pricing = document.createElement("span");
   let imageTag = document.createElement("img");
 
-  title.innerHTML = productProps.name;
-  pricing.innerHTML = productProps.price.toString();
-  imageTag.src = productProps.image;
+  title.innerHTML = product.name;
+  pricing.innerHTML = product.price.toString();
+  imageTag.src = product.image;
 
   container.appendChild(title);
   container.appendChild(imageTag);
   container.appendChild(pricing);
-  productProps.parent.appendChild(container);
+  product.parent.appendChild(container);
 }
 
 /*
@@ -108,25 +88,20 @@ function showProduct(productProps: ProductProps
   */
 function presentStudents(students: Student[]) {
   for (const student of students) {
+      let container = document.createElement("li");
+      let checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      let listOfStudents;
+      container.appendChild(checkbox);
+
     if (student.handedInOnTime) {
-      let container = document.createElement("div");
-      let checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
       checkbox.checked = true;
-
-      container.appendChild(checkbox);
-      let listOfStudents = document.querySelector("ul#passedstudents");
-      listOfStudents?.appendChild(container);
+      listOfStudents = document.querySelector("ul#passedstudents");
     } else {
-      let container = document.createElement("div");
-      let checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
       checkbox.checked = false;
-
-      container.appendChild(checkbox);
-      let listOfStudents = document.querySelector("ul#failedstudents");
-      listOfStudents?.appendChild(container);
+      listOfStudents = document.querySelector("ul#failedstudents");
     }
+    listOfStudents?.appendChild(container);
   }
 }
 
@@ -135,15 +110,11 @@ function presentStudents(students: Student[]) {
   Lorem, ipsum, dolor, sit, amet
   Exemplet under löser problemet, men inte speciellt bra. Hur kan man göra istället?
   */
-function concatenateStrings() {
-  let result = "";
-  result += "Lorem";
-  result += "ipsum";
-  result += "dolor";
-  result += "sit";
-  result += "amet";
 
-  return result;
+const words: string[] = ["Lorem", "ipsum", "dolor", "sit", "amet"]
+
+function concatenateStrings(words: string[]): string {
+  return words.join(" ");
 }
 
 /* 
@@ -152,15 +123,10 @@ function concatenateStrings() {
     fler och fler parametrar behöver läggas till? T.ex. avatar eller adress. Hitta en bättre
     lösning som är hållbar och skalar bättre. 
 */
-function createUser(
-  name: string,
-  birthday: Date,
-  email: string,
-  password: string
-) {
+function createUser(userProps: User) {
   // Validation
 
-  let ageDiff = Date.now() - birthday.getTime();
+  let ageDiff = Date.now() - userProps.birthday.getTime();
   let ageDate = new Date(ageDiff);
   let userAge = Math.abs(ageDate.getUTCFullYear() - 1970);
 
