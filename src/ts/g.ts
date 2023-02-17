@@ -123,6 +123,10 @@ function concatenateStrings(words: string[]): string {
     fler och fler parametrar behöver läggas till? T.ex. avatar eller adress. Hitta en bättre
     lösning som är hållbar och skalar bättre. 
 */
+
+const AGE_REQUIRED = 20;
+const REJECT__MSG = "Du är under 20 år"
+
 function createUser(userProps: User) {
   // Validation
 
@@ -132,9 +136,9 @@ function createUser(userProps: User) {
 
   console.log(userAge);
 
-  if (!(userAge < 20)) {
+  if (userAge > AGE_REQUIRED) {
     // Logik för att skapa en användare
   } else {
-    return "Du är under 20 år";
+    return REJECT__MSG;
   }
 }
